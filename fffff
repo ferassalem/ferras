@@ -1,0 +1,58 @@
+import datetime
+import random
+
+class Goal:
+    def __init__(self, name, description, due_date, priority):
+        self.name = name
+        self.description = description
+        self.due_date = due_date
+        self.priority = priority
+
+class Reminder:
+    def __init__(self, text, reminder_date):
+        self.text = text
+        self.reminder_date = reminder_date
+
+class AIPlanner:
+    def __init__(self):
+        self.goals = []
+        self.reminders = []
+
+    def add_goal(self, name, description, due_date, priority):
+        goal = Goal(name, description, due_date, priority)
+        self.goals.append(goal)
+        print(f"Added goal: {goal.name}")
+
+    def add_reminder(self, text, reminder_date):
+        reminder = Reminder(text, reminder_date)
+        self.reminders.append(reminder)
+        print(f"Added reminder: {reminder.text}")
+
+    def suggest_goal(self):
+        suggestions = ["Exercise for 30 minutes", "Read a book for 1 hour", "Write in your journal"]
+        return random.choice(suggestions)
+
+if __name__ == "__main__":
+    planner = AIPlanner()
+
+    while True:
+        user_input = input("What do you want to do? ")
+        if user_input == "exit":
+            break
+        elif user_input.startswith("set goal"):
+            goal_details = user_input.replace("set goal", "").strip().split(',')
+            name = goal_details[0].strip()
+            description = goal_details[1].strip()
+            due_date = datetime.datetime.strptime(goal_details[2].strip(), "%Y-%m-%d")
+            priority = int(goal_details[3].strip())
+            planner.add_goal(name, description, due_date, priority)
+        elif user_input.startswith("set reminder"):
+            reminder_details = user_input.replace("set reminder", "").strip().split(',')
+            text = reminder_details[0].strip()
+            reminder_date = datetime.datetime.strptime(reminder_details[1].strip(), "%Y-%m-%d %H:%M")
+            planner.add_reminder(text, reminder_date)
+        elif user_input == "suggest goal":
+            suggestion = planner.suggest_goal()
+            print(f"Suggestion: {suggestion}")
+        else:
+            print("Invalid input. Try again.")
